@@ -1,14 +1,15 @@
 package com.linesh.mc.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class OrderData {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class OrderData implements Serializable {
     private String customerId;
-    @JsonIgnore
     private String orderId;
     private List<ItemData> itemDataList;
 }

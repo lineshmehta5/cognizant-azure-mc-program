@@ -15,13 +15,8 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
-    @PostMapping("create-order")
+    @PostMapping("/create-order")
     public ResponseEntity<OrderServiceResponse> createOrder(@RequestBody OrderData orderData) {
         return orderService.processOrder(orderData);
-//        if (orderServiceResponse.getOrderProcessingStatus().equals(OrderProcessingStatus.FAILED_INVALID_ORDER)) {
-//            return new ResponseEntity<OrderServiceResponse>(orderServiceResponse, HttpStatus.BAD_REQUEST);
-//        } else {
-//            return new ResponseEntity<OrderServiceResponse>(orderServiceResponse, HttpStatus.CREATED);
-//        }
     }
 }

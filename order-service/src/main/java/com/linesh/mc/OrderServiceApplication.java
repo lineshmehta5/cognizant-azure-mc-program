@@ -2,10 +2,9 @@ package com.linesh.mc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration;
 import org.springframework.retry.annotation.EnableRetry;
 
-@SpringBootApplication(exclude = {ReactiveSecurityAutoConfiguration.class})
+@SpringBootApplication
 @EnableRetry
 public class OrderServiceApplication {
 

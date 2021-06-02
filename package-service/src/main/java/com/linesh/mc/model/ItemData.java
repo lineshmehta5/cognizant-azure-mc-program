@@ -1,9 +1,13 @@
 package com.linesh.mc.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class ItemData {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ItemData implements Serializable {
     private long itemId;
     private String name;
     private int quantity;
