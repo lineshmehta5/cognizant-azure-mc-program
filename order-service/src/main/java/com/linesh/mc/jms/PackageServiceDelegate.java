@@ -33,6 +33,7 @@ public class PackageServiceDelegate {
         packageServiceResponse.setOrderId(orderData.getOrderId());
         packageServiceResponse.setProcessingStatus(ProcessingStatus.FAILED);
         packageServiceResponse.setMessage(ProcessingStatus.FAILED.getMessage());
+        log.info("Returning Response from Fallback for Package Service...");
         return new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.EXPECTATION_FAILED);
     }
 }
