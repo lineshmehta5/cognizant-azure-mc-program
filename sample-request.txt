@@ -1,0 +1,35 @@
+{
+  "customerId": "123-cust",
+  "itemDataList": [
+    {
+      "addressData": {
+        "addressLine1": "address line1",
+        "addressLine2": "addressLine2",
+        "city": "oslo",
+        "name": "harry potter",
+        "state": "norway",
+        "zipcode": 12345
+      },
+      "itemId": 1,
+      "name": "first-item",
+      "quantity": 10,
+      "totalCost": 100,
+      "unitPrice": 10
+    },
+    {
+      "addressData": {
+        "addressLine1": "2address line1",
+        "addressLine2": "2addressLine2",
+        "city": "2oslo",
+        "name": "2harry potter",
+        "state": "2norway",
+        "zipcode": 12345
+      },
+      "itemId": 2,
+      "name": "2-item",
+      "quantity": 10,
+      "totalCost": 100,
+      "unitPrice": 10
+    }
+  ]
+}

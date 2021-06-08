@@ -21,36 +21,19 @@ public class OrderService {
     @Autowired
     private PackageServiceDelegate packageServiceDelegate;
 
+    CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("packageService");
+
     public ResponseEntity<OrderServiceResponse> processOrder(OrderData orderData) {
         orderData.setOrderId(UUID.randomUUID().toString());
-
-
-        CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("externalService");
-
-        for (int i = 0; i < 500; i++) {
-            System.out.println("counter = " + (i + 1));
-
-            try {
-                // Call service every 1 second.
-                Thread.sleep(1000);
-                // Decorate service call in circuit breaker
-                String status = circuitBreaker.executeSupplier(() -> externalService.callService());
-                System.out.println(status);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                // Print important metric stats to observe behavior of circuit breaker.
-                System.out.println("Successful call count: " + circuitBreaker.getMetrics().getNumberOfSuccessfulCalls()
-                        + " | Failed call count: " + circuitBreaker.getMetrics().getNumberOfFailedCalls()
-                        + " | Failure rate %:" + circuitBreaker.getMetrics().getFailureRate() + " | State: "
-                        + circuitBreaker.getState());
-            }
+        ResponseEntity<PackageServiceResponse> packageServiceResponseResponseEntity = new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.EXPECTATION_FAILED);
+        try {
+            packageServiceResponseResponseEntity = circuitBreaker.executeSupplier(() -> packageServiceDelegate.sortPackage(orderData));
+        } catch (Exception e) {
+            //do nothing
+        } finally {
+            // Print important metric stats to observe behavior of circuit breaker.
+            log.info("Circuit Breaker Statistics :: Successful call count: {}  | Failed call count: {} | Failure rate %: {}  | State: {}", circuitBreaker.getMetrics().getNumberOfSuccessfulCalls(), circuitBreaker.getMetrics().getNumberOfFailedCalls(), circuitBreaker.getMetrics().getFailureRate(), circuitBreaker.getState());
         }
-
-
-        ResponseEntity<PackageServiceResponse> packageServiceResponseResponseEntity = packageServiceDelegate.sortPackage(orderData);
-
-
         OrderServiceResponse orderServiceResponse = new OrderServiceResponse();
         orderServiceResponse.setOrderId(orderData.getOrderId());
         orderServiceResponse.setCustomerId(orderData.getCustomerId());
