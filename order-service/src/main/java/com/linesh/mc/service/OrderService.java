@@ -24,12 +24,14 @@ public class OrderService {
     CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("packageService");
 
     public ResponseEntity<OrderServiceResponse> processOrder(OrderData orderData) {
-        orderData.setOrderId(UUID.randomUUID().toString());
-        ResponseEntity<PackageServiceResponse> packageServiceResponseResponseEntity = new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.EXPECTATION_FAILED);
+        String orderId = UUID.randomUUID().toString();
+        orderData.setOrderId(orderId);
+        log.info("Started Processing new Order Id {}", orderId);
+        ResponseEntity<PackageServiceResponse> packageServiceResponseResponseEntity = new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.NO_CONTENT);
         try {
             packageServiceResponseResponseEntity = circuitBreaker.executeSupplier(() -> packageServiceDelegate.sortPackage(orderData));
         } catch (Exception e) {
-            //do nothing
+            log.error("{} when calling PackageService", e.getMessage());
         } finally {
             // Print important metric stats to observe behavior of circuit breaker.
             log.info("Circuit Breaker Statistics :: Successful call count: {}  | Failed call count: {} | Failure rate %: {}  | State: {}", circuitBreaker.getMetrics().getNumberOfSuccessfulCalls(), circuitBreaker.getMetrics().getNumberOfFailedCalls(), circuitBreaker.getMetrics().getFailureRate(), circuitBreaker.getState());
@@ -38,10 +40,12 @@ public class OrderService {
         orderServiceResponse.setOrderId(orderData.getOrderId());
         orderServiceResponse.setCustomerId(orderData.getCustomerId());
         if (packageServiceResponseResponseEntity.getStatusCode().is2xxSuccessful()) {
+            log.info("Order Processing Completed Successfully in Package Service");
             orderServiceResponse.setProcessingStatus(ProcessingStatus.PROCESSED);
             orderServiceResponse.setMessage(ProcessingStatus.PROCESSED.getMessage());
             return new ResponseEntity<>(orderServiceResponse, HttpStatus.CREATED);
         } else {
+            log.error("Order Processing was unsuccessful in Package Service");
             orderServiceResponse.setProcessingStatus(ProcessingStatus.FAILED);
             orderServiceResponse.setMessage(ProcessingStatus.FAILED.getMessage());
             return new ResponseEntity<>(orderServiceResponse, HttpStatus.EXPECTATION_FAILED);

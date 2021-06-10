@@ -22,18 +22,18 @@ public class PackageServiceDelegate {
 
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000))
     public ResponseEntity<PackageServiceResponse> sortPackage(OrderData orderData) {
-        log.info("Calling Package Service...");
+        log.info("Calling Package Service @ {}", packageServiceSortPackageEndpointUrl);
         return new RestTemplate().postForEntity(packageServiceSortPackageEndpointUrl, orderData, PackageServiceResponse.class);
     }
 
     @Recover
     public ResponseEntity<PackageServiceResponse> sortPackageFallback(RuntimeException e, OrderData orderData) {
-        log.info("Inside Fallback for Package Service...");
+        log.info("Inside Fallback for Package Service. Error was {}", e.getMessage());
         PackageServiceResponse packageServiceResponse = new PackageServiceResponse();
         packageServiceResponse.setOrderId(orderData.getOrderId());
         packageServiceResponse.setProcessingStatus(ProcessingStatus.FAILED);
         packageServiceResponse.setMessage(ProcessingStatus.FAILED.getMessage());
         log.info("Returning Response from Fallback for Package Service...");
-        return new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(new PackageServiceResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -17,6 +17,8 @@ public class PackageController {
 
     @PostMapping("sort-package")
     public void createOrder(@RequestBody OrderData orderData) {
+        log.info("Processing Order Id {}", orderData.getOrderId());
         packageService.sortAndSendPackages(orderData);
+        log.info("Successfully Processed Order Id {}", orderData.getOrderId());
     }
 }

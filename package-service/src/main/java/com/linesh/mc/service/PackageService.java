@@ -26,7 +26,7 @@ public class PackageService {
     ShippingServiceDelegate shippingServiceDelegate;
 
     public void sortAndSendPackages(OrderData orderData) {
-        log.info("Processing OrderData...");
+        log.info("Processing OrderData with Order Id {}", orderData.getOrderId());
         orderData.getItemDataList().forEach(itemData -> itemData.setOrderId(orderData.getOrderId()));
         List<ItemData> eastZoneItemData = orderData.getItemDataList().stream()
                 .filter(itemData -> zoneIndentifier.isEastZoneZip(itemData.getAddressData().getZipcode()))
