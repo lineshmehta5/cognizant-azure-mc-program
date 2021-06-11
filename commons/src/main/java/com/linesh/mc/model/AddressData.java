@@ -15,5 +15,5 @@ public class AddressData implements Serializable {
     private String city;
     private int zipcode;
     private String state;
-    private Zone zone;
+    private Zone zone = null;
 }
