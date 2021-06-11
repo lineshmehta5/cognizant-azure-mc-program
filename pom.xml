@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dummy</groupId>
+    <artifactId>dummy</artifactId>
+    <version>dummy</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>commons</module>
+        <module>order-service</module>
+        <module>package-service</module>
+        <module>shipping-service</module>
+    </modules>
+	
+	    <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <outputDirectory>./target/tmpCobertura</outputDirectory>
+                        <formats>
+                            <format>html</format>
+                        </formats>
+                        <aggregate>true</aggregate>
+                    </configuration>
+                </plugin>
+            </plugins>
+    </build>
+
+</project>

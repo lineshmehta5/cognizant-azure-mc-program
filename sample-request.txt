@@ -23,7 +23,7 @@
         "city": "2oslo",
         "name": "2harry potter",
         "state": "2norway",
-        "zipcode": 12345
+        "zipcode": 54321
       },
       "itemId": 2,
       "name": "2-item",

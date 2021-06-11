@@ -10,11 +10,18 @@
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.linesh.mc</groupId>
     <artifactId>shipping-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>shipping-service</name>
     <description>Courier Service API</description>
+
+    <properties>
+        <azure.version>3.5.0</azure.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.linesh.mc</groupId>
@@ -24,6 +31,11 @@
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>azure-spring-boot-starter-cosmos</artifactId>
             <version>3.5.0</version>
         </dependency>
     </dependencies>
